@@ -1,0 +1,209 @@
+#' Vega embed options
+#'
+#' Helper-function to specify the `embed` argument to `vegawidget()`.
+#' These arguments reflect the options to the
+#' [vega-embed](https://github.com/vega/vega-embed/#options)
+#' library, which ultimately renders the chart specification as HTML.
+#'
+#' The most important arguments are `renderer`, `actions`, and `defaultStyle`:
+#'
+#' - The default `renderer` is `"canvas"`.
+#'
+#' - The default for `actions` is `NULL`, which means that the `export`,
+#' `source`, and `editor` links are shown, but the `compiled` link is
+#' not shown.
+#'   - To suppress all action links, call with `actions = FALSE`.
+#'   - To change from the default for a given action link, call with a list:
+#'     `actions = list(editor = FALSE)`.
+#'
+#' - The default for `defaultStyle` is `TRUE`, which means that action-links
+#' are rendered in a widget at the upper-right corner of the rendered chart.
+#'
+#' It is ineffective to set the `width` and `height` parameters here when
+#' embedding a Vega-Lite specification, as they will be overridden by the values
+#' in the chart specification.
+#'
+#' @param mode `character` if specified, tells Vega-Embed to parse the spec
+#'   as vega or vega-lite. Vega-Embed will parse the `$schema` url if the mode
+#'   is not specified. Vega-Embed will default to vega if neither mode,
+#'   nor $schema are specified.
+#' @param theme `character` if specified, tells Vega-Embed use the theme from
+#'   [Vega Themes](https://github.com/vega/vega-themes);
+#'   this is an experimental feature.
+#' @param defaultStyle `logical` or `character`
+#'   default stylesheet for embed actions
+#' @param renderer `character` the renderer to use for the view.
+#'   One of `"canvas"` (default) or `"svg"`.
+#'   See [Vega docs](https://vega.github.io/vega/docs/api/view/#view_renderer)
+#'   for details.
+#' @param logLevel 	sets the current log level.
+#'  See [Vega docs](https://vega.github.io/vega/docs/api/view/#view_logLevel)
+#'  for details.
+#' @param tooltip `JS`, `logical`, or object
+#'   to provide a [tooltip handler](https://vega.github.io/vega/docs/api/view/#view_tooltip),
+#'   customize the default [Vega Tooltip handler](https://github.com/vega/vega-tooltip),
+#'   or disable the default handler.
+#' @param loader	sets a custom Vega loader.
+#'   See [Vega docs](https://github.com/vega/vega-loader#loader)
+#'   for details.
+#' @param patch	`JS` function or object, A function to modify the Vega
+#'   specification before it is parsed. Alternatively, an object that is used
+#'   to patch the Vega specification. If you use Vega-Lite, the compiled Vega
+#'   will be patched.
+#' @param width	`integer` sets the view width in pixels.
+#' See [Vega docs](https://vega.github.io/vega/docs/api/view/#view_width)
+#' for details.
+#' Note that Vega-Lite overrides this option.
+#' @param height	`integer`, sets the view height in pixels.
+#' See [Vega docs](https://vega.github.io/vega/docs/api/view/#view_height)
+#' for details.
+#' Note that Vega-Lite overrides this option.
+#' @param padding	`list`, sets the view padding in pixels.
+#' See [Vega docs](https://vega.github.io/vega/docs/api/view/#view_padding)
+#' for details.
+#' @param actions `logical` or named vector of logicals, determines if action links
+#'   ("Export as PNG/SVG", "View Source", "Open in Vega Editor")
+#'   are included with the embedded view.
+#'   If the value is `TRUE` (default), all action links will be shown
+#'   and none if the value is `FALSE`. This property can be a named vector of
+#'   logicals that maps
+#'   keys (`export`, `source`, `compiled`, `editor`) to logical values for determining
+#'   if each action link should be shown. By default, `export`, `source`,
+#'   and `editor` are `TRUE` and `compiled` is `FALSE`, but these defaults
+#'   can be overridden. For example, if `actions` is
+#'   `list(export =  FALSE, source = TRUE)`, the embedded visualization will
+#'   have two links – "View Source" and "Open in Vega Editor".
+#' @param scaleFactor `numeric` the number by which to multiply the width and
+#'   height (default 1) of an exported PNG or SVG image.
+#' @param config `character` or `list` a URL string from which to load
+#'   a Vega/Vega-Lite or Vega-Lite configuration file, or a `list` of
+#'   Vega/Vega-Lite configurations to override the default configuration
+#'   options. If `config` is a URL, it will be subject to standard browser
+#'   security restrictions. Typically this URL will point to a file on the same
+#'   host and port number as the web page itself.
+#' @param editorUrl	`character`, URL at which to open embedded Vega specs
+#'   in a Vega editor. Defaults to `"http://vega.github.io/editor/"`.
+#'   Internally, Vega-Embed uses
+#'   [HTML5 postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
+#'   to pass the specification information to the editor.
+#' @param sourceHeader `character`, HTML to inject into the `` tag of the
+#'   page generated by the "View Source" action link. For example, this
+#'   can be used to add code for [syntax highlighting](https://highlightjs.org/).
+#' @param sourceFooter `character`, HTML to inject into the end of the
+#'   page generated by the "View Source" action link. The text will be added
+#'   immediately before the closing `` tag.
+#' @param hover `logical`, enable [hover event processing](https://vega.github.io/vega/docs/api/view/#view_hover)
+#' @param runAsync	`logical`, indicating to use
+#'   [`runAsync`](https://vega.github.io/vega/docs/api/view/#view_runAsync)
+#'   instead of [`run`](https://vega.github.io/vega/docs/api/view/#view_run).
+#' @param i18n `list`, This property maps keys
+#'   (COMPILED_ACTION, EDITOR_ACTION, PNG_ACTION, SOURCE_ACTION, SVG_ACTION)
+#'   to string values for the action's text. By default, the text is in English.
+#'
+#' @seealso [vega-embed library](https://github.com/vega/vega-embed),
+#'   [vegawidget()]
+#'
+#' @examples
+#' vega_embed(renderer = "svg")
+#'
+#' @return `list` to to be used with vega-embed JavaScript library
+#' @export
+#'
+vega_embed <- function(renderer = c("canvas", "svg"),
+                       actions = NULL,
+                       defaultStyle = TRUE,
+                       mode = NULL,
+                       theme = NULL,
+                       logLevel = NULL,
+                       tooltip = NULL,
+                       loader = NULL,
+                       patch = NULL,
+                       width = NULL,
+                       height = NULL,
+                       padding = NULL,
+                       scaleFactor = NULL,
+                       config = NULL,
+                       editorUrl = NULL,
+                       sourceHeader = NULL,
+                       sourceFooter = NULL,
+                       hover = NULL,
+                       runAsync = NULL,
+                       i18n = NULL) {
+
+  renderer <- match.arg(renderer)
+
+  # if not null, coerce actions to logical, preserve names
+  if (!is.null(actions)) {
+    names_actions <- names(actions)
+    actions <- as.logical(actions)
+
+    # if named, turn into a list
+    if (!is.null(names_actions)) {
+      actions <- as.list(actions)
+      names(actions) <- names_actions
+    }
+  }
+
+  names_actions_legal <- c("export", "source", "compiled", "editor")
+
+  # unnamed must have length 1
+  if (!rlang::is_named(actions) && !is.null(actions)) {
+    assertthat::assert_that(
+      identical(length(actions), 1L),
+      msg = ("if `actions` is unnamed, it must have length 1")
+    )
+  }
+
+  # names have to be unique and proper
+  if (rlang::is_named(actions)) {
+    assertthat::assert_that(identical(names_actions, unique(names_actions)))
+    assertthat::assert_that(
+      all(names_actions %in% names_actions_legal),
+      msg = paste(
+        "`actions` has illegal name",
+        paste("provided names:", paste(names_actions, collapse = ", ")),
+        paste("legal names:", paste(names_actions_legal, collapse = ", ")),
+        sep = "\n"
+      )
+    )
+  }
+
+  options <-
+    list(
+      mode = mode,
+      theme = theme,
+      defaultStyle = defaultStyle,
+      renderer = renderer,
+      logLevel = logLevel,
+      tooltip = tooltip,
+      loader = loader,
+      patch = patch,
+      width = width,
+      height = height,
+      padding = padding,
+      actions = actions,
+      scaleFactor = scaleFactor,
+      config = config,
+      editorUrl = editorUrl,
+      sourceHeader = sourceHeader,
+      sourceFooter = sourceFooter,
+      hover = hover,
+      runAsync = runAsync,
+      i18n = i18n
+    )
+
+  embed_options <- list_remove_null(options)
+
+  embed_options
+}
+
+list_remove_null <- function(x) {
+
+  # determine which elements are NULL
+  is_null <- vapply(x, is.null, logical(1))
+
+  # remove them by settiing them to NULL (!?!)
+  x[is_null] <- NULL
+
+  x
+}
