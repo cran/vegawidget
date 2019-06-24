@@ -8,7 +8,7 @@ vegawidget(spec, embed = NULL, width = NULL, height = NULL,
   elementId = NULL, base_url = NULL, ...)
 }
 \arguments{
-\item{spec}{object to be coerced to \code{vegaspec}, a Vega/Vega-Lite specification}
+\item{spec}{An object to be coerced to \code{vegaspec}, a Vega/Vega-Lite specification}
 
 \item{embed}{\code{list} to specify
 \href{https://github.com/vega/vega-embed#options}{vega-embed} options,
@@ -72,8 +72,8 @@ of the \strong{entire} rendered chart, including axes, labels, etc.
 }
 
 Please note that if you are using a remote URL to refer to a dataset in
-your vegaspec, it will not render properly in the RStudio IDE. This
-is due to a security policy set by RStudio. If you open the chart in a
+your vegaspec, it will may not render properly in the RStudio IDE,
+due to a security policy set by RStudio. If you open the chart in a
 browser, it should render properly.
 }
 \examples{
@@ -92,7 +92,7 @@ browser, it should render properly.
     as_vegaspec()
 
   # define local path to file
-  path_local <- system.file("example-data/", package = "vegawidget")
+  path_local <- system.file("example-data", package = "vegawidget")
 
   # render using local path
   vegawidget(spec_precip, base_url = path_local)

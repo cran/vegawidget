@@ -31,8 +31,8 @@
 #' of the **entire** rendered chart, including axes, labels, etc.
 #'
 #' Please note that if you are using a remote URL to refer to a dataset in
-#' your vegaspec, it will not render properly in the RStudio IDE. This
-#' is due to a security policy set by RStudio. If you open the chart in a
+#' your vegaspec, it will may not render properly in the RStudio IDE,
+#' due to a security policy set by RStudio. If you open the chart in a
 #' browser, it should render properly.
 #'
 #' @inheritParams as_vegaspec
@@ -70,7 +70,7 @@
 #'     as_vegaspec()
 #'
 #'   # define local path to file
-#'   path_local <- system.file("example-data/", package = "vegawidget")
+#'   path_local <- system.file("example-data", package = "vegawidget")
 #'
 #'   # render using local path
 #'   vegawidget(spec_precip, base_url = path_local)
@@ -103,27 +103,45 @@ vegawidget <- function(spec, embed = NULL, width = NULL, height = NULL,
   # autosize (if needed)
   spec <- vw_autosize(spec, width = width, height = height)
 
-  # (note for later, we should take into account the possibility
-  # that `base_url` is specified using vega_embed())
+  ## base_url
+  #
+  # if `base_url` is specified here, it overrides the loader specified
+  # in `embed`
+
+  # if specified, set base_url in embed-loader
+  if (!is.null(base_url)) {
+    embed[["loader"]] <- embed[["loader"]] %||% list()
+    embed[["loader"]][["baseURL"]] <- base_url
+  }
+
+  # check for `baseURL` in `embed[["loader"]`
+  baseURL <- embed[["loader"]][["baseURL"]]
+
   # if base_url is a local directory need to create a depencency
-  if (!is.null(base_url) && dir.exists(base_url)){
+  if (!is.null(baseURL) && dir.exists(baseURL)) {
+
+    # make sure that all the URL's in the spec will be sensible
     urls <- .find_urls(spec)
-    full_urls <- file.path(normalizePath(base_url), urls)
+    full_urls <- file.path(normalizePath(baseURL), urls)
     if (!file.exists(full_urls)) {
-        stop("Local file suggested by base_url and urls in spec does not exist:",
-             full_urls[which(!file.exists(full_urls))])
+      stop(
+        "Local file suggested by base_url and urls in spec does not exist:",
+        full_urls[which(!file.exists(full_urls))]
+      )
     }
 
+    # set data-dependency for this chart
     data_dependency <- htmltools::htmlDependency(
       name = "data",
       version = "0.0.0",
-      src = c(file = normalizePath(base_url)),
+      src = c(file = normalizePath(baseURL)),
       attachment = basename(full_urls),
       all_files = FALSE
     )
-    base_url <- "lib/data-0.0.0/"
+    # set loader to refer to new location
+    embed[["loader"]][["baseURL"]] <- "lib/data-0.0.0/"
   } else {
-    data_dependency = NULL
+    data_dependency <- NULL
   }
 
   # use internal methods here because spec has already been validated
@@ -132,8 +150,6 @@ vegawidget <- function(spec, embed = NULL, width = NULL, height = NULL,
     chart_spec = .as_list(spec),
     embed_options = embed
   )
-
-  x$base_url <- base_url # Don't include if not there
 
   x <- .as_json(x)
 
@@ -175,6 +191,9 @@ vegawidget <- function(spec, embed = NULL, width = NULL, height = NULL,
 #' @export
 #'
 vegawidgetOutput <- function(outputId, width = "auto", height = "auto") {
+
+  assert_packages("shiny")
+
   htmlwidgets::shinyWidgetOutput(
     outputId,
     "vegawidget",
@@ -197,6 +216,8 @@ vegawidgetOutput <- function(outputId, width = "auto", height = "auto") {
 #' @export
 #'
 renderVegawidget <- function(expr, env = parent.frame(), quoted = FALSE) {
+
+  assert_packages("shiny")
 
   # if sent a vegaspec, convert to a vegawidget
   if (inherits(expr, "vegaspec")) {

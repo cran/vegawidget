@@ -1,42 +1,139 @@
 #' Add vegawidget functions to your package
 #'
-#' This function does the setup for your package to use vegawidget functions:
-#' - adds **vegawidget** to "Imports" in your package's DESCRIPTION file
-#' - creates `R/utils-vegawidget.R`
-#' - encourages you to take the steps outlined in **Details**
+#' These functions are offered to help you import and re-export vegawidget
+#' functions in your package.
 #'
-#' You will have to edit `R/utils-vegawidget.R`:
+#'  `use_vegawidget()`:
+#'
+#' Adds vegawidget functions:
+#'  - [as_vegaspec()], [vw_as_json()]
+#'  - [vegawidget()], `knit_print()`
+#'  - [vega_embed()]
+#'  - [vw_to_svg()] and other image functions
+#'  - [vegawidgetOutput()], [renderVegawidget()]
+#'  - [spec_mtcars]
+#'
+#' In practical terms:
+#' - adds **vegawidget** to `Imports` in your package's DESCRIPTION file.
+#' - adds **processx**, **rsvg**, **png**, **fs** to `Suggests`
+#'   in your package's DESCRIPTION file.
+#' - creates `R/utils-vegawidget.R`
+#' - at your discretion, delete references to functions you do not want
+#'   to re-export.
+#'
+#' If you have your own S3 class for a spec, specify the `s3_class_name`
+#' argument. You will have to edit `R/utils-vegawidget-<s3_class_name>.R`:
 #' - add the code within your class's method for
 #'  to coerce your object to a `vegaspec`.
+#'
+#' `use_vegawidget_interactive()`:
+#'
+#' If you want to add the JavaScript and Shiny functions,
+#' use this after running `use_vegawidget()`. It adds:
+#'  - [vw_add_data_listener()] and other listener-functions.
+#'  - [vw_handler_data()] and other handler functions.
+#'  - [vw_shiny_get_data()] and other Shiny getters.
+#'  - [vw_shiny_set_data()] and other Shiny setters.
+#'
+#' In practical terms:
+#' - adds **shiny**, **dplyr**, to `Suggests`.
+#' - creates `R/utils-vegawidget-interactive.R`.
 #' - at your discretion, delete references to functions you do not want
-#' to re-export.
+#'   to re-export.
 #'
 #' @param s3_class_name `character`, name of an S3 class for object to
-#'   be coerced to a `vegaspec`
+#'   be coerced to a `vegaspec`; default (NULL) implies no additional class
 #'
 #' @return invisible `NULL`, called for side effects
 #' @export
 #'
-use_vegawidget <- function(s3_class_name) {
+use_vegawidget <- function(s3_class_name = NULL) {
 
-  assert_packages("usethis", "whisker", "crayon", "clipr", "desc", "clisymbols")
+  assert_packages("usethis")
 
-  data <- list(s3_class_name = s3_class_name)
+  usethis::use_package("vegawidget", type = "Imports")
+
+  suggests <- c("processx", "rsvg", "png", "fs")
+
+  usethis::ui_todo(
+    "To render images, {usethis::ui_value('vegawidget')} \\
+    uses the packages {usethis::ui_value(suggests)}. \\
+    You may wish to add them to this package's \"Suggests\". \\
+    As well, your package's users will require \\
+    {usethis::ui_value('nodejs')} be installed on their computer."
+  )
+
+  # usethis::use_package("httr", type = "Suggests")      # spec
+  # usethis::use_package("knitr", type = "Suggests")     # vignettes
+  # usethis::use_package("rmarkdown", type = "Suggests")
+  # usethis::use_package("processx", type = "Suggests")  # images
+  # usethis::use_package("rsvg", type = "Suggests")
+  # usethis::use_package("png", type = "Suggests")
+  # usethis::use_package("fs", type = "Suggests")
+
+  filename <- glue::glue("R/utils-vegawidget.R")
+  usethis::ui_todo(
+    "Remove unwanted functions from {usethis::ui_value(filename)}"
+  )
 
   usethis::use_template(
     "utils-vegawidget.R",
-    save_as = "R/utils-vegawidget.R",
-    data = data,
+    save_as = filename,
     open = TRUE,
     package = "vegawidget"
   )
 
-  val_fnname <- value(glue::glue("as_vegaspec.{s3_class_name}()"))
-  val_filename <- value("R/utils-vegawidget.R")
+  # if we have an S3 class
+  if (!is.null(s3_class_name)) {
+    data <- list(s3_class_name = s3_class_name)
 
-  todo(glue::glue("Adapt function {val_fnname}"))
-  todo(glue::glue("Remove unwanted functions from {val_filename}"))
-  todo("Document and rebuild package")
+    filename <- glue::glue("R/utils-vegawidget-{s3_class_name}.R")
+    usethis::ui_todo(
+      "Remove unwanted functions from {usethis::ui_value(filename)}"
+    )
+
+    usethis::use_template(
+      "utils-vegawidget-class.R",
+      save_as = filename,
+      data = data,
+      open = TRUE,
+      package = "vegawidget"
+    )
+
+    val_fnname <- usethis::ui_value(glue::glue("as_vegaspec.{s3_class_name}()"))
+    usethis::ui_todo("Adapt function {val_fnname}")
+  }
+
+  usethis::ui_todo("Document and rebuild package")
+
+  invisible(NULL)
+}
+
+#' @rdname use_vegawidget
+#' @export
+#'
+use_vegawidget_interactive <- function() {
+
+  # Assumes you already have run use_vegawidget
+
+  assert_packages("usethis")
+
+  usethis::use_package("shiny", type = "Suggests")  # shiny
+  usethis::use_package("dplyr", type = "Suggests")
+
+  filename <- glue::glue("R/utils-vegawidget-interactive.R")
+  usethis::ui_todo(
+    "Remove unwanted functions from {usethis::ui_value(filename)}"
+  )
+
+  usethis::use_template(
+    "utils-vegawidget-interactive.R",
+    save_as = filename,
+    open = TRUE,
+    package = "vegawidget"
+  )
+
+  usethis::ui_todo("Document and rebuild package")
 
   invisible(NULL)
 }

@@ -45,11 +45,6 @@ HTMLWidgets.widget({
       // x, object to instantitate htmlwidget
       renderValue: function(x) {
 
-        // if x has base_url use it
-        if (x.base_url !== null){
-          x.embed_options.loader = vega.loader({baseURL: x.base_url});
-        }
-
         // initialise promise
         view_promise =
           vegaEmbed(el, x.chart_spec, opt = x.embed_options)
@@ -60,10 +55,10 @@ HTMLWidgets.widget({
         // fulfill promise by rendering the visualisation
         view_promise
           .then(function(view) {
-            // By removing the style (width and height) of the
+            // By specifying the style (width and height) of the
             // enclosing element, we let the "chart" decide the space it
             // will occupy.
-            // el.setAttribute("style", "");
+            el.setAttribute("style", "width:auto;height:auto;");
             // console.log(el);
           })
           .catch(console.error);
@@ -231,6 +226,30 @@ if (HTMLWidgets.shinyMode) {
     // get, then operate on the view
     Vegawidget.findViewPromise("#" + msg.outputId).then(function(view) {
       view.addSignalListener(msg.name, handler);
+    });
+
+  });
+
+
+  Shiny.addCustomMessageHandler('addDataListener', function(msg) {
+
+    // note - there seems to be a *lot* of similarity among the
+    // listener message-functions. When we move to ES6, I think it
+    // could be useful to try to see if we can do this in *one*
+    // message-function.
+
+    // `msg` properties
+    //   `outputId` - name of the shiny outputId for the vegawidget
+    //   `handlerBody` - the body of a function (name, value) that
+    //      returns the value you want to bound to `inputId`
+    //   `name` - name of the signal to bind
+
+    // convert the handlerBody to a function
+    var handler = new Function("name", "value", msg.handlerBody);
+
+    // get, then operate on the view
+    Vegawidget.findViewPromise("#" + msg.outputId).then(function(view) {
+      view.addDataListener(msg.name, handler);
     });
 
   });

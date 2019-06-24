@@ -18,7 +18,7 @@ vw_write_svg(spec, path, width = NULL, height = NULL, ...)
 vw_write_png(spec, path, scale = 1, width = NULL, height = NULL, ...)
 }
 \arguments{
-\item{spec}{object to be coerced to \code{vegaspec}, a Vega/Vega-Lite specification}
+\item{spec}{An object to be coerced to \code{vegaspec}, a Vega/Vega-Lite specification}
 
 \item{width}{\code{integer}, if specified, the total rendered width (in pixels)
 of the chart - valid only for single-view charts and layered charts;
@@ -54,7 +54,8 @@ If you have  \strong{\href{https://nodejs.org/en/}{nodejs}} installed,
 you can use these functions can to create
 or write images as PNG or SVG, using a \code{vegaspec} or \code{vegawidget}.
 To convert to a bitmap, or write a PNG file, you will additionally need
-the  \strong{\href{https://CRAN.R-project.org/package=rsvg}{rsvg}} package.
+the \strong{\href{https://CRAN.R-project.org/package=rsvg}{rsvg}} and
+\strong{\href{https://CRAN.R-project.org/package=png}{png}} packages.
 }
 \details{
 There is a known limitation to these functions - if you are using a vegaspec

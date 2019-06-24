@@ -34,6 +34,35 @@ useful to:
     of plots, or even to build a general ggplot2-like framework, using
     this package as a foundation (or inspiration).
 
+## New in vegawidget 0.2
+
+  - vegawidget offers Vega-Lite 3.3.0 and Vega 5.4.0. Consequently, this
+    package works only with browsers that support ES6. This includes all
+    modern browsers and the 1.2 version of the RStudio IDE.
+
+  - When knitting to a non-HTML format, e.g. `github_document`, this
+    package provides a `knit_print()` function that will intercept the
+    normal renderer, using instead its own renderer, allowing you to
+    specify `"png"` , `"svg"` or `"pdf"`. It requires that
+    [nodejs](https://nodejs.org) be installed on your system, as well as
+    the R packages [rsvg](https://cran.r-project.org/package=rsvg) and
+    [png](https://cran.r-project.org/package=png). MacOS users will
+    require an X11 system, such as [XQuartz](https://www.xquartz.org),
+    to be installed.
+    
+    For an example, see the GitHub rendering of this [README
+    file](https://github.com/vegawidget/vegawidget/blob/master/README.md).
+    For more details, please see the [Render Using Vegawidget
+    article](https://vegawidget.github.io/vegawidget/articles/articles/render-vegawidget.html#knitting-strategies).
+
+  - For interactive applications, there are now functions to support
+    vega-view’s
+    [`addDataListener()`](https://vega.github.io/vega/docs/api/view/#view_addDataListener)
+    function:
+    [`vw_add_data_listener()`](https://vegawidget.github.io/vegawidget/reference/add-listeners.html),
+    and
+    [`vw_shiny_get_data()`](https://vegawidget.github.io/vegawidget/reference/shiny-getters.html).
+
 ## Installation
 
 You can install vegawidget from CRAN with:
@@ -42,51 +71,25 @@ You can install vegawidget from CRAN with:
 install.packages("vegawidget")
 ```
 
-You can also install vegawidget from GitHub with:
+The development version of vegawidget is available from GitHub with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("vegawidget/vegawidget")
 ```
 
-This package supports these versions of Vega libraries:
-
-``` r
-library("vegawidget")
-vega_version()
-#> $vega_lite
-#> [1] "2.6.0"
-#> 
-#> $vega
-#> [1] "4.0.0"
-#> 
-#> $vega_embed
-#> [1] "3.25.0"
-```
-
-The *first* released version of vegawidget supports Vega-Lite 2.6.0, the
-*last* release of Vega-Lite that will run using JavaScript version ES5.
-The next version of Vega-Lite, 3.0.0, will use JavaScript ES6.
-
-In practical terms, this means that this version of vegawidget will be
-the *only* version that will display properly using version 1.1.x of the
-RStudio IDE.
-
-As soon as Vega-Lite makes its 3.0.0 release, we will make another
-vegawidget release - for which you will need to use a (presently
-preview) version of the RStudio IDE at least 1.2.x.
+**Note:** There are documentation websites for both the [CRAN
+version](https://vegawidget.github.io/vegawidget) and the [development
+version](https://vegawidget.github.io/vegawidget/dev) of this package.
 
 ## Introduction
-
-For a comprehensive introduction to Vega-Lite, please visit the its [web
-site](https://vega.github.io/vega-lite). An [interactive
-tutorial](https://ijlyttle.shinyapps.io/vegawidget-overview) to
-vegawidget is available at shinyapps.io.
 
 Vega(-Lite) specifications are just text, formatted as JSON. However, in
 R, we can use lists to build specifications:
 
 ``` r
+library("vegawidget")
+
 spec_mtcars <-
   list(
     `$schema` = vega_schema(), # specifies Vega-Lite
@@ -110,79 +113,52 @@ vegaspecs:
 spec_mtcars
 ```
 
-![](man/figures/README-vegawidget-1.png)<!-- -->
+![](man/figures/README-vegawidget-1.svg)<!-- -->
 
-The appearance of the chart above depends on where you are reading it:
+The rendering of the chart above depends on where you are reading it:
 
   - On this package’s [pkgdown
     site](https://vegawidget.github.io/vegawidget), it is rendered as
     part of an HTML environment, showing its full capabilities.
 
   - At its [GitHub code site](https://github.com/vegawidget/vegawidget),
-    the chart is further rendered as a static PNG.
+    the chart is further rendered to a static SVG file, then
+    incorporated into the Markdown rendering.
 
-This is package a low-level interface to Vega-Lite and the Vega
-ecosystem, which has a lot of powerful capabilities, highlighted in this
-series of articles:
+For more, please see our [Getting
+Started](https://vegawidget.github.io/vegawidget/articles/vegawidget.html)
+article. For other introductory material, please see:
+
+  - [Vega-Lite website](https://vega.github.io/vega-lite) has a
+    comprehensive introduction
+  - An [interactive learnr
+    tutorial](https://ijlyttle.shinyapps.io/vegawidget-overview) at
+    shinyapps.io
+
+Other articles for this package:
 
   - [Specify using
-    vegaspec](https://vegawidget.github.io/vegawidget/articles/vegaspec.html):
+    vegaspec](https://vegawidget.github.io/vegawidget/articles/articles/vegaspec.html):
     how to construct and render a vegaspec.
   - [Render using
-    vegawidget](https://vegawidget.github.io/vegawidget/articles/vegawidget.html):
+    vegawidget](https://vegawidget.github.io/vegawidget/articles/articles/render-vegawidget.html):
     advanced rendering options.
   - [Extend using
-    Shiny](https://vegawidget.github.io/vegawidget/articles/shiny.html):
+    Shiny](https://vegawidget.github.io/vegawidget/articles/articles/shiny.html):
     how to interact with Vega charts using Shiny.
   - [Extend using
-    JavaScript](https://vegawidget.github.io/vegawidget/articles/javascript.html):
+    JavaScript](https://vegawidget.github.io/vegawidget/articles/articles/javascript.html):
     how to interact with Vega charts using JavaScript.
   - [Create
-    Images](https://vegawidget.github.io/vegawidget/articles/image.html):
+    Images](https://vegawidget.github.io/vegawidget/articles/articles/image.html):
     how to create and save PNG or SVG images.
   - [Work with Dates and
-    Times](https://vegawidget.github.io/vegawidget/articles/dates-times.html):
+    Times](https://vegawidget.github.io/vegawidget/articles/articles/dates-times.html):
     dates and times in Vega(-Lite) work a little differently from R.
   - [Import into Other
-    Packages](https://vegawidget.github.io/vegawidget/articles/import.html):
+    Packages](https://vegawidget.github.io/vegawidget/articles/articles/import.html):
     how to import vegawidget functions into your package, then re-export
     them.
-
-To share your Vega(-Lite) creation on the [Blocks](https://bl.ocks.org)
-website, you can use the
-[**vegablock**](https://vegawidget.github.io/vegablock) package.
-
-## Integration with other packages
-
-Although there is an
-[article](https://vegawidget.github.io/vegawidget/articles/import.html)
-dedicated to this aspect of the package, it warrants further emphasis.
-
-This package provides functions to render Vega(-Lite) specifications;
-although it provides some helpers, it does not provide higher-level
-functions to build specifications. Rather, this is left to other
-packages. Even though you can use its functions directly, you are
-invited to import and re-export them for use in *your* package.
-
-Accordingly, this package offers a templating function,
-`use_vegawidget()`, to help you integrate vegawidget functions into your
-package. For example, it is used to import and re-export vegawidget
-functions for the [altair](https://vegawidget.github.io/altair) package.
-
-## Known limitations
-
-The two biggest known limitations are both associated with vegaspecs
-that contain [datasets specified using remote
-URLs](https://vega.github.io/vega-lite/docs/data.html#url):
-
-  - The RStudio IDE does not let you access remote URLs for security
-    reasons. A chart that accesses remote data will not render in the
-    IDE; it *will* render in a browser window.
-
-  - The image functions use **nodejs** to create SVG strings. We are not
-    able to configure the proxy in our node scripts, so if your computer
-    uses a proxy to access remote data, our functions will not create
-    the images properly.
 
 ## Acknowledgements
 
@@ -204,7 +180,8 @@ URLs](https://vega.github.io/vega-lite/docs/data.html#url):
 
 ## Contributing
 
-Contributions are welcome, please see this [guide](CONTRIBUTING.md).
+Contributions are welcome, please see this
+[guide](https://vegawidget.github.io/vegawidget/CONTRIBUTING.html).
 Please note that this project is released with a [Contributor Code of
-Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
-to abide by its terms.
+Conduct](https://vegawidget.github.io/vegawidget/CODE_OF_CONDUCT.html).
+By participating in this project you agree to abide by its terms.

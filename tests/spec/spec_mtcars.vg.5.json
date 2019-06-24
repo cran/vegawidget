@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega/v3.json",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "An mtcars example.",
   "autosize": "pad",
   "padding": 5,
@@ -464,8 +464,6 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toNumber(datum[\"wt\"])", "as": "wt"},
-        {"type": "formula", "expr": "toNumber(datum[\"mpg\"])", "as": "mpg"},
         {
           "type": "filter",
           "expr": "datum[\"wt\"] !== null && !isNaN(datum[\"wt\"]) && datum[\"mpg\"] !== null && !isNaN(datum[\"mpg\"])"
@@ -484,6 +482,9 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "cyl"},
+          "tooltip": {
+            "signal": "{\"wt\": format(datum[\"wt\"], \"\"), \"mpg\": format(datum[\"mpg\"], \"\"), \"cyl\": ''+datum[\"cyl\"]}"
+          },
           "x": {"scale": "x", "field": "wt"},
           "y": {"scale": "y", "field": "mpg"}
         }
@@ -528,9 +529,9 @@
     {
       "scale": "x",
       "orient": "bottom",
+      "gridScale": "y",
       "grid": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "gridScale": "y",
       "domain": false,
       "labels": false,
       "maxExtent": 0,
@@ -550,9 +551,9 @@
     {
       "scale": "y",
       "orient": "left",
+      "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
-      "gridScale": "x",
       "domain": false,
       "labels": false,
       "maxExtent": 0,
@@ -564,6 +565,8 @@
   "legends": [
     {
       "stroke": "color",
+      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolType": "circle",
       "title": "cyl",
       "encode": {
         "symbols": {
@@ -574,6 +577,5 @@
         }
       }
     }
-  ],
-  "config": {"axisY": {"minExtent": 30}}
+  ]
 }

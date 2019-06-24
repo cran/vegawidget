@@ -1,0 +1,184 @@
+---
+title: "Create images"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_document
+---
+
+The main purpose of this article is to demonstrate use this package's image-generating functions. A secondary purpose is to help the package's developers confirm that these functions continue to work when things get changed. 
+
+If you have **[nodejs](https://nodejs.org)** installed on your computer, you can use these image-generating functions to convert vegaspecs (or vegawidgets) into SVG strings or write SVG files. With the **[rsvg](https://CRAN.R-project.org/package=rsvg)** and **[png](https://CRAN.R-project.org/package=png)** packages installed, you can get a bitmap array, or write PNG files.  
+
+We have four image-generating functions; they each take either a vegaspec or a vegawidget as their main argument:
+
+- `vw_to_svg()` returns a string for a SVG image
+- `vw_to_bitmap()` returns a bitmap array that can be written to a PNG file
+- `vw_write_svg()` writes an SVG file, invisibly returns the vegaspec or vegawidget
+- `vw_write_png()` writes a PNG file, invisibly returns the vegaspec or vegawidget
+
+As you can see, the function name indicates the action taken and the image-format.
+
+In addition to a vegaspec or vegawidget, these are the principal arguments:
+
+- `width`, and `height`, sent to `vw_autosize()` to specify the display dimensions. These refer to the *overall* dimensions of the image - not the dimensions of the plotting area.
+- `scale`, to support display at retina resolutions. The default value is 1; for a retina image, you can specify a value of 2.
+- `path`, for the image-writing functions, this indicates the local path to which the file is to be written.
+
+As you are most likely already aware, there is a tradeoff between PNG and SVG. The PNG format is an image with finite resolution. The SVG format is a set of instructions on how to render an image, so it has no resolution limitations. In general, the size of an SVG file scales with the number of graphical marks it contains, whereas a PNG file scales with its pixel-width and pixel-height.
+
+Please be aware that there is a known limitation to these functions - if you are using a vegaspec that has dataset loaded from a remote URL. The `nodejs` scripts are not able to use a proxy, so if if your computer uses a proxy to access the remote URL, the data will not load.
+
+```{r, message=FALSE}
+library("conflicted")
+library("vegawidget")
+library("htmltools")
+library("glue")
+```
+
+## Reference 
+
+For the purpose of comparing later renderings, our reference is this `mtcars` scatterplot. It is rendered, in HTML, with a plotting area of `width = 300` and `height = 300`.
+
+```{r}
+spec_mtcars
+```
+
+## Bitmap & PNG
+
+To use the bitmap and PNG functions, you will need the **[rsvg](https://CRAN.R-project.org/package=rsvg)** and **[png](https://CRAN.R-project.org/package=png)** packages.
+
+### To bitmap
+
+The `vw_to_bitmap()` function returns a bitmap array. The package uses it primarily for converting the SVG to PNG; you may have other uses. 
+
+We can show the effect of the `scale` argument by inspecting the dimensions of the bitmap array. Using the default, `scale = 1`:
+
+```{r}
+vw_to_bitmap(spec_mtcars) %>% dim()
+```
+
+At `scale = 2`:
+
+```{r}
+vw_to_bitmap(spec_mtcars, scale = 2) %>% dim()
+```
+
+### PNG output
+
+The function `vw_write_png()` uses `vw_to_bitmap()` to write an image-file. 
+
+### Normal scale
+
+The function `vw_write_png()` generates an image at 96 DPI. We will write out a PNG file, then display it at the same resolution.
+
+**Expectation**: the image will be rendered at the same size as the [reference](#reference), but **not** at retina resolution.
+
+```{r}
+tmp_file <- tempfile(fileext = ".png")
+
+vw_write_png(spec_mtcars, path = tmp_file)
+
+tags$img(src = knitr::image_uri(tmp_file))
+```
+
+We note that the PNG appears slightly different from the HTML rendering. We suspect this is because the SVG-rendering engine, **[librsvg](https://github.com/GNOME/librsvg)**, works differently from your browser. In the future, we would like to find a way to make the rendering more-similar.
+
+### Retina scale
+
+By increasing the `scale` to 2, then decreasing the display-size by a factor of two, we can show this image at "retina" resolution. The code below is a little tortured, there should be an easier way. In the future, we would like for this to be the default method for knitting to a non-HTML medium (using PNG or SVG), and that it "just work".
+
+**Expectation**: the image will be rendered at the same size as the [reference](#reference), at retina resolution.
+
+
+```{r}
+tmp_file <- tempfile(fileext = ".png")
+  
+vw_write_png(spec_mtcars, path = tmp_file, scale = 2)
+
+tags$img(
+  src = knitr::image_uri(tmp_file), 
+  onload = "this.width/=2;this.onload=null;"
+)
+```
+
+### Using vegawidget
+
+This demonstrates that we can use `vw_write_png()` with vegawidgets. 
+
+**Expectation**: the image will be rendered at the same size as the [reference](#reference), but **not** at retina resolution.
+
+```{r}
+tmp_file <- tempfile(fileext = ".png")
+  
+vw_write_png(vegawidget(spec_mtcars), path = tmp_file)
+
+tags$img(src = knitr::image_uri(tmp_file))
+```
+
+## SVG
+
+### To string
+
+The `vw_to_svg()` function returns an HTML string:
+
+```{r}
+vw_to_svg(spec_mtcars) %>% str()
+```
+
+This string can be rendered as standard HTML:
+
+```{r}
+vw_to_svg(spec_mtcars) %>% HTML()
+```
+
+### Normal scale
+
+**Expectation**: this image will appear identical to the [reference](#reference): 
+
+```{r}
+vw_to_svg(spec_mtcars) %>% HTML()
+```
+
+### Autosize
+
+**Expectation**: We expect that the rendered image will have a *total* size of `width = 600` and `height = 300`, and to appear at retina resolution.
+
+```{r}
+vw_to_svg(spec_mtcars, width = 600, height = 300) %>% HTML()
+```
+
+## Other visual-regressions
+
+Although the rest of these do not use images, they are included in this article to make it easier to verify that things render as we expect.
+
+### Autosize 
+
+**Expectation**: the rendered spec will have a *total* size of `width = 600` and `height = 300`.
+
+```{r}
+vw_autosize(spec_mtcars, width = 600, height = 300)
+```
+
+**Expectation**: we will get the same result using the `vegawidget()` function:
+
+```{r}
+vegawidget(spec_mtcars, width = 600, height = 300)
+```
+
+**Expectation**: we will get the same result by setting `vega.width` and `vega.height` as knitr options, like so:
+
+    ```{r vega.width=600, vega.height=300}
+    spec_mtcars
+    ```
+
+```{r vega.width=600, vega.height=300}
+spec_mtcars
+```
+
+### Vega
+
+**Expectation**: this will be identical to the [reference](#reference) case, using the `vw_to_vega()` function to compile to a Vega specification:
+
+```{r}
+vw_to_vega(spec_mtcars)
+```
+

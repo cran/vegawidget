@@ -10,6 +10,7 @@
 #' without any arguments:
 #'
 #' - `vw_handler_signal()`
+#' - `vw_handler_data()`
 #' - `vw_handler_event()`
 #'
 #' With a JavaScript handler, you are trying to do two types of things:
@@ -18,7 +19,7 @@
 #' - produce a side-effect based on that calculated value
 #'
 #' Let's look at a concrete example.
-#' A [*signal* handler](https://github.com/vega/vega/tree/master/packages/vega-view#view_addSignalListener)
+#' A [*signal* handler](https://vega.github.io/vega/docs/api/view#view_addSignalListener)
 #' will take arguments `name` and `value`. Let's say that we want to
 #' return the value. We could do this two ways:
 #'
@@ -54,11 +55,15 @@
 #' @return object with S3 class `vw_handler`
 #' @seealso [vw_handler_add_effect()]
 #'   vega-view:
-#'     [addSignalListener()](https://github.com/vega/vega/tree/master/packages/vega-view#view_addSignalListener),
-#'     [addEventListener()](https://github.com/vega/vega/tree/master/packages/vega-view#view_addEventListener)
+#'     [addSignalListener()](https://vega.github.io/vega/docs/api/view#view_addSignalListener),
+#'     [addDataListener()](https://vega.github.io/vega/docs/api/view#view_addDataListener),
+#'     [addEventListener()](https://vega.github.io/vega/docs/api/view#view_addEventListener)
 #' @examples
 #'   # list all the available signal-handlers
 #'   vw_handler_signal()
+#'
+#'   # list all the available data-handlers
+#'   vw_handler_data()
 #'
 #'   # list all the available event-handlers
 #'   vw_handler_event()
@@ -73,6 +78,32 @@
 vw_handler_signal <- function(body_value) {
 
   handler_type <- .vw_handler_library[["signal"]]
+
+  # if handler_body is missing, print out available handlers
+  if (missing(body_value)) {
+    print(handler_type)
+    return(invisible(NULL))
+  }
+
+  # if handler_body is a handler, return the handler
+  if (inherits(body_value, "vw_handler")) {
+    return(body_value)
+  }
+
+  # get the handler_body
+  body_value <- vw_handler_body(body_value, "signal")
+
+  # create the handler
+  args <- handler_type$args
+  vw_handler(args, body_value, NULL)
+}
+
+#' @rdname vw_handler_signal
+#' @export
+#'
+vw_handler_data <- function(body_value) {
+
+  handler_type <- .vw_handler_library[["data"]]
 
   # if handler_body is missing, print out available handlers
   if (missing(body_value)) {

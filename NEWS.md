@@ -1,3 +1,25 @@
+# vegawidget 0.2.1
+
+* Upgrade to Vega-Lite 3.3.0, Vega 5.4.0, vega-embed 4.2.0. This is supported by all modern browsers and RStudio IDE 1.2.
+
+## New features
+
+* Update Vega and Vega-Lite libraries to be consistent with Vega-Lite v3.2.1. Add functions to support `addDataListener()` method offered by [vega-view](https://github.com/vega/vega-view#view_addDataListener), use `vw_shiny_demo("data-set-get")` for more information. (#65)
+
+## Improvements and fixes
+
+* Modify `knit_print()` to handle non-HTML formats. Instead of using the [webshot](https://github.com/wch/webshot) package, the `knit_print()` function converts charts to either `png`, `svg` (useful for `github_document`), or `pdf` (useful for `pdf_document`) format. (#44, @AliciaSchep)
+
+* Improve implementation of the `base_url` argument in `vegawidget()`; it works for both local and remote paths. (#63, with @AliciaSchep)
+
+* Update templating functions, splitting to two functions: `use_vegawidget()` and `use_vegawidget_interactive()`, which let you import and re-export basic-rendering and interactive functions, respectively. If your package keeps its version of a spec in its own S3 class, you can call `use_vegawidget()` with that class' name. (#83)
+
+* Move **shiny** from an `Imports` dependency to a `Suggests` dependency. (#82)
+
+* (Of interest to developers) modify the class-naming for Vega-Lite specs, adding a another level of S3 class that describes the type of chart, e.g. unit, layer, facet, etc. (#77)
+
+* Modify contribution guidelines; use `master` as reference branch for all pull-requests.
+
 # vegawidget 0.1.0
 
 * CRAN release
@@ -28,7 +50,7 @@
 
 * changes default-display for `vw_examine()`
 
-* adds function `vw_rename_data()` to reanme named datasets within a vegaspec (#34)
+* adds function `vw_rename_data()` to rename named datasets within a vegaspec (#34)
 
 # vegawidget 0.0.4
 

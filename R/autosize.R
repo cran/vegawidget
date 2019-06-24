@@ -31,7 +31,7 @@
 #' @return S3 object with class `vegaspec`
 #' @examples
 #'   vw_autosize(spec_mtcars, width = 350, height = 350)
-#' @seealso [Article on vegaspec (sizing)](https://vegawidget.github.io/vegawidget/articles/vegaspec.html#sizing),
+#' @seealso [Article on vegaspec (sizing)](https://vegawidget.github.io/vegawidget/articles/articles/vegaspec.html#sizing),
 #'   [Vega documentation on sizing](https://vega.github.io/vega-lite/docs/size.html#autosize)
 #' @export
 #'
@@ -55,19 +55,33 @@ vw_autosize <- function(spec, width = NULL, height = NULL) {
     call. = FALSE)
 }
 
+.autosize.vegaspec_hconcat <- function(spec, width = NULL, height = NULL) {
+  # the message that used to be here, and in the other autosize methods,
+  # seemed too chatty
+  NextMethod()
+}
+
+.autosize.vegaspec_vconcat <- function(spec, width = NULL, height = NULL) {
+  NextMethod()
+}
+
+.autosize.vegaspec_concat <- function(spec, width = NULL, height = NULL) {
+  NextMethod()
+}
+
+.autosize.vegaspec_facet <- function(spec, width = NULL, height = NULL) {
+  NextMethod()
+}
+
+.autosize.vegaspec_repeat <- function(spec, width = NULL, height = NULL) {
+  NextMethod()
+}
+
 .autosize.vegaspec_vega_lite <- function(spec, width = NULL, height = NULL) {
 
   if (is.null(c(width, height))) {
     # nothing to do here
     return(spec)
-  }
-
-  # if this spec has multiple views, warn that autosize will not work
-  if (is_multiple_view(spec)) {
-    warning(
-      "Specifying the width or height of a ",
-      "vegaspec with multiple views has no effect on rendering."
-    )
   }
 
   # using this notation: spec$config <- spec$config %||% list()
@@ -108,11 +122,3 @@ vw_autosize <- function(spec, width = NULL, height = NULL) {
   spec
 }
 
-is_multiple_view <- function(spec) {
-
-  spec <- as_vegaspec(spec)
-
-  names_multiple_view <- c("facet", "repeat", "hconcat", "vconcat")
-
-  any(names_multiple_view %in% names(spec))
-}

@@ -11,7 +11,7 @@
 #' To see these functions in action, you can run a shiny-demo:
 #'
 #' - `vw_shiny_set_signal()`: call `vw_shiny_demo("signal-set-get")`
-#' - `vw_shiny_set_data()`: call `vw_shiny_demo("data-set")`
+#' - `vw_shiny_set_data()`: call `vw_shiny_demo("data-set-get")`
 #' - `vw_shiny_run()`: call `vw_shiny_demo("data-set-swap-run")`
 #'
 #' For the signal and data setters, in addition to the chart `outputId`,
@@ -46,6 +46,8 @@
 #'
 vw_shiny_set_signal <- function(outputId, name, value, run = TRUE, ...) {
 
+  assert_packages("shiny")
+
   # captures (but does not evaluate) the reactive expression
   value <- rlang::enquo(value)
 
@@ -71,6 +73,8 @@ vw_shiny_set_signal <- function(outputId, name, value, run = TRUE, ...) {
 #' @export
 #'
 vw_shiny_set_data <- function(outputId, name, value, run = TRUE, ...) {
+
+  assert_packages("shiny")
 
   # until we sort things out with Vega, cacheing will not work
   use_cache <- FALSE
@@ -131,6 +135,8 @@ vw_shiny_set_data <- function(outputId, name, value, run = TRUE, ...) {
 #' @export
 #'
 vw_shiny_run <- function(outputId, value, ...) {
+
+  assert_packages("shiny")
 
   # captures (but does not evaluate) the reactive expression
   value <- rlang::enquo(value)
