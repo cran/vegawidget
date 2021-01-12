@@ -1,3 +1,34 @@
+# vegawidget 0.3.2
+
+* Upgrade to Vega-Lite 4.17.0, Vega 5.17.0, vega-embed 6.12.2. 
+
+## New features
+
+* New function `vw_set_base_url()`: 
+
+  - set the option for vega-embed's default [`baseURL`](https://github.com/vega/vega-loader#loader). (#147)
+  - `use_vegawidget()` now re-exports `vw_set_base_url()`, does not re-export `spec_mtcars`. (#150)
+  - image functions (`vw_to_svg()` and friends) respect the `baseURL` option set using `vw_set_base_url()`. (#148)
+  
+* `vega_embed()`: 
+
+  - the `actions` argument lets you specify `export$png` and `export$svg`. (#115)
+  
+  - the bulk of the options for [vega-embed](https://github.com/vega/vega-embed) can be supplied as named arguments using `...` rather than as explicit arguments to `vega_embed()`. 
+  This will make it easier to support future enhancements to vega-embed.
+  
+## Bug fixes
+
+* Unique identifier used in attaching data from local files; `elementId` is used if provided, if not an md5 hash of the files is used.
+  This would be useful for knitting documents, but attaching local data works only for interactive analysis, not for knitr environments.
+  Hence this "fix" is anticipation of other enchancements. (#125)
+
+* `vegawidget()`: keep precision in JSON representation for accurate rendering of small values (< 0.001). (#130, @datapixie)
+
+* `knit_print()`: repair by exporting the S3 method. (#132)
+
+* `as_vegaspec()`: adds `encoding` argument (default `"UTF-8"`) for `character` method, for files and URLs. (#117, with @g3o2)
+
 # vegawidget 0.3.1
 
 * Upgrade to Vega-Lite 4.0.2, Vega 5.9.0, vega-embed 6.2.0. 
@@ -46,7 +77,7 @@
 
 * tries a kinder, gentler method for enforcing sizing by implementing a sizing policy rather than overwriting the enclosing element
 
-* deprecates block-functions: `vw_create_block()`, `vw_retrieve_block()`; moved to [vegablock](https://vegawidget.github.io/vegablock)
+* deprecates block-functions: `vw_create_block()`, `vw_retrieve_block()`; moved to [vegablock](https://vegawidget.github.io/vegablock/)
 
 # vegawidget 0.0.4.9000
 
