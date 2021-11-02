@@ -1,5 +1,5 @@
 Package: vegawidget
-Version: 0.3.2
+Version: 0.3.3
 Title: 'Htmlwidget' for 'Vega' and 'Vega-Lite'
 Description: 'Vega' and 'Vega-Lite' parse text in 'JSON' notation to render 
   chart-specifications into 'HTML'. This package is used to facilitate the 
@@ -55,7 +55,7 @@ Suggests: spelling, knitr, rmarkdown, listviewer, httr, testthat (>=
 Language: en-US
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2021-01-11 21:36:54 UTC; sesa19001
+Packaged: 2021-11-02 16:40:42 UTC; ijlyttle
 Author: Ian Lyttle [aut, cre] (<https://orcid.org/0000-0001-9962-4849>),
   Vega/Vega-Lite Developers [aut],
   Alicia Schep [ctb] (<https://orcid.org/0000-0002-3915-0618>),
@@ -69,4 +69,4 @@ Author: Ian Lyttle [aut, cre] (<https://orcid.org/0000-0001-9962-4849>),
   Hadley Wickham [ctb] (s3_register)
 Maintainer: Ian Lyttle <ian.lyttle@se.com>
 Repository: CRAN
-Date/Publication: 2021-01-12 08:40:08 UTC
+Date/Publication: 2021-11-02 18:30:02 UTC

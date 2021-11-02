@@ -1,7 +1,7 @@
-f0eb4dac3a59e05eec9d42e77e47ce1b *DESCRIPTION
+fa71cf06aa2f507d18f8655a2f94146e *DESCRIPTION
 4a72fa71b37f996ec369b6a65c79683a *LICENSE
 afab28374d7acef9b6e69cbca0580a29 *NAMESPACE
-dfdbd00c5290f63b46065d7768e81cb4 *NEWS.md
+8265235631fd9cd43552ec6413b0d6d1 *NEWS.md
 cf8800607468db39e1525858b8454436 *R/autosize.R
 d85b920636fe0ceaa22f179ba9d1c356 *R/data.R
 d70cbc9ba24219f6d9e3eebf2c94f049 *R/examine.R
@@ -26,15 +26,15 @@ ad2708f83de7962cb06bd2f179508a0d *R/utils-node.R
 7d7a59673b9dcd59ae57ef3be9ddac77 *R/utils-null.R
 f4312af9801247376c4bebd95f51c3d9 *R/utils-package.R
 297fd760e33713dfc34d1cc0586d0e2e *R/utils-pipe.R
-088cdf7f86e4d11034ab5998af9938d2 *R/utils-vegaspec.R
+e1dfd656e7f356cfff2efacd4e0ad45c *R/utils-vegaspec.R
 ad41c0b0a1cc0d604009e3aeb6cd10fc *R/vega-embed.R
 5a9520931100868effaa38f6b7b7a316 *R/vega-version.R
 f586b3482ee47ba7adfa33cd7e4b5188 *R/vegaspec.R
 71127daa7b55d1496ee2e8c50f658237 *R/vegawidget.R
 944c6b4c8c0b7393beb416e4bc2141c4 *R/write-image.R
 0f002af94a5d601bdf97ead3e2f4b8af *R/zzz.R
-c5c396c03b734bf0f206803ce6ef0e64 *README.md
-411e73010e79221dbcb2a4b443343375 *build/vignette.rds
+dbc8c32407cdf4a0be2942e7eb8b2bcb *README.md
+7ca899e34f48b415f35b0dac30df48b6 *build/vignette.rds
 95f5bc21753d0cdc204bfeb6a1469b67 *data/data_category.rda
 75a9061cea92e90387f31e1d9e957e41 *data/data_seattle_daily.rda
 9a7b0f7fad1a81d466db84624330c51e *data/data_seattle_hourly.rda
@@ -51,7 +51,7 @@ a563c59dcae297567d20b7b5f5f7c6c5 *inst/bin/node_modules/node-fetch/lib/index.js
 4c1121c2ade5009477e4a649f09f2b2a *inst/bin/vega_to_svg.js
 1482151a4aedcc82842127f535afbd15 *inst/doc/vegawidget.R
 e3ef2d380a9d61227d027601054cd933 *inst/doc/vegawidget.Rmd
-71e75832b1e9c6e7428ebac313ce3b01 *inst/doc/vegawidget.html
+830829ab804ce2c4acc5a81914d7b38e *inst/doc/vegawidget.html
 0c53271f5864c528f9898eedaa82245b *inst/example-data/seattle-weather.csv
 4bb6c57009dc7cfc943317326fa1e3cc *inst/htmlwidgets/lib/vega-embed/LICENSE
 2ab85cf9f3d83d6155fddc5d96aaa265 *inst/htmlwidgets/lib/vega-embed/vega-embed.css
@@ -159,7 +159,7 @@ d54a0dfad2077af890d225a733c66da8 *tests/testthat/test-serialize-data.R
 e99611e103fb76806120afa87df590a0 *tests/testthat/test-to-vega.R
 dff4360412808ba8dfe2eb76539f872e *tests/testthat/test-vega-embed.R
 5adbf9373f1ceccbc0f501648d045fe4 *tests/testthat/test-vega-version.R
-d5c9048cd36cd0cdbd8b2a421f800f28 *tests/testthat/test-vegaspec.R
+2d664b2e24faee4b86c140e65d2cafbc *tests/testthat/test-vegaspec.R
 ee6fc61b8f979aaccc41e3569d1a540f *vignettes/articles/autosize-off.png
 a9a19000d9dbb9b2e24f46ef7302f9a3 *vignettes/articles/autosize-on.png
 6c775719eec1f13c275e2d9548c2420a *vignettes/articles/dates-times.Rmd
