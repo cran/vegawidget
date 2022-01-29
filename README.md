@@ -14,43 +14,47 @@ status](https://www.r-pkg.org/badges/version/vegawidget)](https://cran.r-project
 the grammar-of-graphics, rendered in the browser with interactivity.
 
 The goal of vegawidget is to render Vega-Lite and Vega specifications as
-htmlwidgets, and to provide you a means to communicate with a Vega chart
-using JavaScript or Shiny. Its ambition is to be a *low-level* interface
-to the Vega(-Lite) API, such that other packages can build upon it to
-offer higher-level functions to compose Vega(-Lite) specifications.
+htmlwidgets, and to help you communicate with a Vega chart using
+JavaScript or Shiny. Its ambition is to be a *low-level* interface to
+the Vega(-Lite) API, so that other packages can build upon it.
 
 Accordingly, this package may be useful to:
 
 -   build (using lists of lists) re-usable Vega and Vega-Lite
     specifications for deployment elsewhere.
--   develop higher-level, user-friendly packages to build specific types
-    of plots, or even to build a general ggplot2-like framework, using
-    this package as the rendering foundation.
+-   develop higher-level, user-friendly packages to compose specific
+    types of plots, or even to build a general ggplot2-like framework,
+    using this package as the rendering foundation.
 
 ## Features
 
-### New to vegawidget 0.3.3
+### New to vegawidget 0.4
 
-This is a small release:
+-   vegawidget now supports the last two Vega-Lite major-versions,
+    currently versions 5 and 4.
 
--   When converting vegaspec to JSON, `NA` is serialized to `null`.
+    However, for a given R session (e.g. rendering of an RMarkdown
+    file), the `vegawidget()` function can use only *one* major-version;
+    this version is determined using the `$schema` element of the first
+    `vegaspec` evaluated using `vegawidget()`.
 
--   Update to a test to comply with changes to testthat.
+    This restriction does not apply to the image functions,
+    e.g. `vw_to_svg()`, or to the compilation function, `vw_to_vega()`.
 
-### New to vegawidget 0.3.2
+-   use `vega_version_all()` to see the available versions:
 
--   vegawidget offers Vega-Lite 4.17.0 and Vega 5.17.0. Consequently,
-    this package works only with browsers that support ES6. This
-    includes all modern browsers and the RStudioIDE (version 1.2 and
-    later).
+``` r
+library("vegawidget")
 
--   new function `vw_set_base_url()`, to set the option for
-    [vega-embed](https://github.com/vega/vega-embed)’s default
-    [`baseURL`](https://github.com/vega/vega-loader#loader).
+vega_version_all()
+#>   widget vega_lite   vega vega_embed
+#> 1    vl5     5.2.0 5.21.0     6.20.2
+#> 2    vl4    4.17.0 5.17.0     6.12.2
+```
 
--   changes `vega_embed()` to use `...` to pass most of its arguments,
-    making a more-forgiving connection to
-    [vega-embed](https://github.com/vega/vega-embed).
+-   Compiling a spec and creating an image now uses the
+    **[V8](https://cran.r-project.org/package=V8)** package, rather than
+    depending on a local installation of nodejs.
 
 ## Installation
 
@@ -113,6 +117,9 @@ The rendering of the chart above depends on where you are reading it:
 -   At its [GitHub code site](https://github.com/vegawidget/vegawidget),
     the chart is further rendered to a static SVG file, then
     incorporated into the Markdown rendering.
+
+A [learnr](https://rstudio.github.io/learnr/index.html) tutorial is
+available: `learnr::run_tutorial("overview", package = "vegawidget")`.
 
 For more, please see our [Getting
 Started](https://vegawidget.github.io/vegawidget/articles/vegawidget.html)

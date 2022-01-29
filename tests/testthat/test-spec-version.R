@@ -1,29 +1,29 @@
 schema_vega <- "https://vega.github.io/schema/vega/v5.json"
-schema_vega_lite <- "https://vega.github.io/schema/vega-lite/v4.json"
+schema_vega_lite <- "https://vega.github.io/schema/vega-lite/v5.json"
 
 vega <- list(library = "vega", version = "5")
-vega_lite <- list(library = "vega_lite", version = "4")
+vega_lite <- list(library = "vega_lite", version = "5")
 
-test_that(".schema_type warns", {
+test_that("parse_schema warns", {
 
   empty <- list(library = "", version = "")
 
   expect_warning(
-    expect_identical(.schema_type("NULL"), empty),
+    expect_identical(parse_schema("NULL"), empty),
     "NULL$"
   )
 
   expect_warning(
-    expect_identical(.schema_type("foo"), empty),
+    expect_identical(parse_schema("foo"), empty),
     "foo$"
   )
 
 })
 
-test_that(".schema_type works", {
+test_that("parse_schema works", {
 
-  expect_identical(.schema_type(schema_vega), vega)
-  expect_identical(.schema_type(schema_vega_lite), vega_lite)
+  expect_identical(parse_schema(schema_vega), vega)
+  expect_identical(parse_schema(schema_vega_lite), vega_lite)
 
 })
 
@@ -35,7 +35,9 @@ test_that("vw_spec_version works", {
 
 test_that("vega_schema works", {
 
-  expect_identical(vega_schema(), schema_vega_lite)
-  expect_identical(vega_schema("vega"), schema_vega)
+  expect_snapshot(vega_schema())
+  expect_snapshot(vega_schema("vega"))
+  expect_snapshot(vega_schema("vega_lite", major = FALSE))
+  expect_snapshot(vega_schema("vega_lite", version = "5.2.0"))
 
 })

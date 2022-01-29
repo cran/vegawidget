@@ -175,7 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To share your Vega(-Lite) creation on the <a href="https://bl.ocks.org">Blocks</a> website, you can use the <a href="https://vegawidget.github.io/vegablock/"><strong>vegablock</strong></a> package.</p>
 <div id="integration-with-other-packages" class="section level2">
 <h2>Integration with other packages</h2>
-<p>Although there is an <a href="https://vegawidget.github.io/vegawidget/articles/articles/import.html">article</a> dedicated to this aspect of the package, it warrants further emphasis.</p>
+<p>Although there is an <a href="https://vegawidget.github.io/vegawidget/articles/import.html">article</a> dedicated to this aspect of the package, it warrants further emphasis.</p>
 <p>This package provides functions to render Vega(-Lite) specifications; although it provides some helpers, it does not provide higher-level functions to build specifications. Rather, this is left to other packages. Even though you can use its functions directly, you are invited to import and re-export them for use in <em>your</em> package.</p>
 <p>Accordingly, this package offers a templating function, <code>use_vegawidget()</code>, to help you integrate vegawidget functions into your package. For example, it is used to import and re-export vegawidget functions for the <a href="https://vegawidget.github.io/altair/">altair</a> package.</p>
 </div>
@@ -209,7 +209,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>There are limitations associated with vegaspecs that contain <a href="https://vega.github.io/vega-lite/docs/data.html#url">datasets specified using remote URLs</a>:</p>
 <ul>
 <li><p>The RStudio IDE may not let you access remote URLs for security reasons. A chart that accesses remote data may not render in the IDE; it <em>will</em> render in a browser window.</p></li>
-<li><p>The image functions use <strong>nodejs</strong> to create SVG strings. We are not able to configure the proxy in our node scripts, so if your computer uses a proxy to access remote data, our functions will not create the images properly.</p></li>
+<li><p>The image functions use <strong>V8</strong> to create SVG strings. If you are accessing remote data in your chart (i.e. your spec uses an HTTP(S) URL), you will need to make sure that R has access to the remote data (i.e. if you use a proxy, it is set up in R).</p></li>
 </ul>
 </div>
 

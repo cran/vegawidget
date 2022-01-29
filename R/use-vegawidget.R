@@ -4,7 +4,7 @@
 #' functions in your package. For more detail, please see
 #' [this article](https://vegawidget.github.io/vegawidget/articles/articles/import.html).
 #'
-#'  `use_vegawidget()`:
+#' **`use_vegawidget()`**:
 #'
 #' Adds vegawidget functions:
 #'  - [as_vegaspec()], [vw_as_json()]
@@ -15,7 +15,7 @@
 #'
 #' In practical terms:
 #' - adds **vegawidget** to `Imports` in your package's DESCRIPTION file.
-#' - adds **processx**, **rsvg**, **png**, **fs** to `Suggests`
+#' - adds **V8**, **withr**, **fs**, **rsvg**, and **png** to `Suggests`
 #'   in your package's DESCRIPTION file.
 #' - creates `R/utils-vegawidget.R`
 #' - you can delete references to functions you do not want
@@ -56,23 +56,13 @@ use_vegawidget <- function(s3_class_name = NULL) {
 
   usethis::use_package("vegawidget", type = "Imports")
 
-  suggests <- c("processx", "rsvg", "png", "fs")
+  suggests <- c("V8", "withr", "fs", "rsvg", "png")
 
   usethis::ui_todo(
     "To render images, {usethis::ui_value('vegawidget')} \\
     uses the packages {usethis::ui_value(suggests)}. \\
-    You may wish to add them to this package's \"Suggests\". \\
-    As well, your package's users will require \\
-    {usethis::ui_value('nodejs')} be installed on their computer."
+    You may wish to add them to this package's \"Suggests\"."
   )
-
-  # usethis::use_package("httr", type = "Suggests")      # spec
-  # usethis::use_package("knitr", type = "Suggests")     # vignettes
-  # usethis::use_package("rmarkdown", type = "Suggests")
-  # usethis::use_package("processx", type = "Suggests")  # images
-  # usethis::use_package("rsvg", type = "Suggests")
-  # usethis::use_package("png", type = "Suggests")
-  # usethis::use_package("fs", type = "Suggests")
 
   filename <- glue::glue("R/utils-vegawidget.R")
   usethis::ui_todo(

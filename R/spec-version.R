@@ -14,21 +14,19 @@
 #' @return `list` with elements `library`, `version`
 #' @examples
 #'   vw_spec_version(spec_mtcars)
-#' \dontrun{
-#'   # requires nodejs to be installed
+#'   # vw_to_vega() requires the V8 package
 #'   vw_spec_version(vw_to_vega(spec_mtcars))
-#' }
 #' @export
 #'
 vw_spec_version <- function(spec) {
 
   spec <- as_vegaspec(spec)
-  version <- .schema_type(spec[["$schema"]])
+  version <- parse_schema(spec[["$schema"]])
 
   version
 }
 
-.schema_type <- function(schema) {
+parse_schema <- function(schema) {
 
   result <- list(library = "", version = "")
 
@@ -60,12 +58,15 @@ vw_spec_version <- function(spec) {
 #' Useful if you are creating a vegaspec manually.
 #'
 #' @param library `character`, either `"vega"` or `"vega_lite"`
+#' @param version `character`, version of library, e.g. `"5.2.0"`;
+#'   if `version` is provided, `major` defaults to `FALSE`.
 #' @inheritParams vega_version
 #'
 #' @return `character` URL for schema
 #' @examples
 #'   vega_schema()
 #'   vega_schema("vega", major = FALSE)
+#'   vega_schema("vega_lite", version = "5.2.0")
 #'
 #'   # creating a spec by hand
 #'   spec <-
@@ -79,10 +80,11 @@ vw_spec_version <- function(spec) {
 #'
 #' @export
 #'
-vega_schema <- function(library = c("vega_lite", "vega"), major = TRUE) {
+vega_schema <- function(library = c("vega_lite", "vega"), version = NULL,
+                        major = is.null(version)) {
 
   library <- match.arg(library)
-  version <- vega_version(major = major)[[library]]
+  version <- version %||% vega_version(major = major)[[library]]
 
   # change "vega_lite" to "vega-lite"
   library <- gsub("_", "-", library)
@@ -92,4 +94,15 @@ vega_schema <- function(library = c("vega_lite", "vega"), major = TRUE) {
   schema <- as.character(schema)
 
   schema
+}
+
+# internal function to help test different schema versions
+with_schema <- function(value, spec) {
+  schema <- spec[["$schema"]]
+  schema_new <- sub("v(\\d+)\\.json$", glue::glue("v{value}.json"), schema)
+
+  spec_new <- spec
+  spec_new[["$schema"]] <- schema_new
+
+  spec_new
 }

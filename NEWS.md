@@ -1,3 +1,48 @@
+# vegawidget 0.4.1
+
+* vegawidget now supports the last two Vega-Lite major versions,
+  currently versions 5 and 4. 
+  
+  However, for a given loading of this package (or RMarkdown file), the
+  `vegawidget()` function can use only *one* major-version; this version
+  is determined using the `$schema` element of the first `vegaspec` evaluated
+  using `vegawidget()`.
+  
+  This restriction does not apply to the image functions, e.g. `vw_to_svg()`,
+  or to the compilation function, `vw_to_vega()`.
+  
+  Functions introduced:
+  
+  - `vega_version_all()`: all packaged versions.
+  - `vega_version_available()`: available versions, subject to locking.
+  
+  (#169)
+  
+* Update Actions. (#188)
+
+* Use Vega-Lite 5.2.0. (#183)
+
+* Update `s3_register()`. (#193)
+
+* Deprecated `schema` folder from package files, i.e. `system.file("schema", package = "vegawidget")`. 
+  This folder will be removed at the release following v0.4.1.
+  Instead, you can use the `vega_schema()` function (with new optional `version`
+  argument) to retrieve from Vega:
+  
+  ```r
+  vega_schema("vega-lite", version = "5.2.0") |> vw_fetch()
+  ```
+  
+  (#185)
+
+* Use V8 rather than node to support image-functions and `vw_to_vega()`. 
+  This adds V8 as a package-dependency, but removes the system-dependency for node. 
+  As a result, remote-data loading *works* as long as you can access the data from R. (#85)
+
+* Update contributor-information. (#176)
+
+* Clean up `inst` folder: remove `test-apps`. (#197)
+
 # vegawidget 0.3.3
 
 * Fix test to comply with testthat changes. (#162, @lionel-)
