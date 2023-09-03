@@ -1,8 +1,8 @@
-21ae06a4ddd054517a7d49c899e476b7 *DESCRIPTION
+b603241d2c8b1391c3ffcb1c9ca39109 *DESCRIPTION
 4a72fa71b37f996ec369b6a65c79683a *LICENSE
 45e1c77ef6ee816d3832179ade6b8b05 *NAMESPACE
-a3d5d5cfcb8ea7bee67be3283714140b *NEWS.md
-cf8800607468db39e1525858b8454436 *R/autosize.R
+4f32e025a30a5addbf7ea62d52ea7b57 *NEWS.md
+02b9cb14cd548157d8dc45b5e04889e4 *R/autosize.R
 a2d0f03995135e47c077679d68078b10 *R/callback-helpers.R
 d85b920636fe0ceaa22f179ba9d1c356 *R/data.R
 d70cbc9ba24219f6d9e3eebf2c94f049 *R/examine.R
@@ -28,13 +28,13 @@ f4312af9801247376c4bebd95f51c3d9 *R/utils-package.R
 297fd760e33713dfc34d1cc0586d0e2e *R/utils-pipe.R
 a655fb9cc99aa388c0d919ec4d7795ca *R/utils-vegaspec.R
 de1e35e6ea6ff1e1b3a0c06fb9b9de6a *R/vega-embed.R
-6e6260ff3fe0cc398367fe70ceefffa6 *R/vega-version.R
+f41536b0fb8a08101f3bc89d37488e5f *R/vega-version.R
 41c8c5f3ae2fbea522c5666dd9a4f4e1 *R/vegaspec.R
 1e767e6a1f97c4445c41e252dce2c510 *R/vegawidget.R
 944c6b4c8c0b7393beb416e4bc2141c4 *R/write-image.R
 8e3943bdef285f904d5c060b7267645c *R/zzz.R
-55ca3ae3d2003d824a553ed8fc2838f2 *README.md
-2671d966a3293fe69ec6aff6bedc1535 *build/vignette.rds
+ed5b81cd9980ded9fd4f2b2adb52bb08 *README.md
+bc218e6cfa0a32cd9ab8ed61b155e2be *build/vignette.rds
 84d3e8dba523c46ca55709807666e0a0 *data/data_category.rda
 e922b20c2af7dd943ddd1d6aedde192e *data/data_seattle_daily.rda
 ac348177718fc82363fda96bbea8d685 *data/data_seattle_hourly.rda
@@ -42,7 +42,7 @@ c3e92804c4914f2853f02fdec7fbc524 *data/spec_mtcars.rda
 ef51b9d896efc280b7877818d525c79c *inst/bin/vega_to_svg_v8.js
 1482151a4aedcc82842127f535afbd15 *inst/doc/vegawidget.R
 b6e0a5425089cbf587199c9a3b9b84d1 *inst/doc/vegawidget.Rmd
-40c490863466793c200a234369da7d15 *inst/doc/vegawidget.html
+0bb1ae760afb5731b30bf27f290db384 *inst/doc/vegawidget.html
 0c53271f5864c528f9898eedaa82245b *inst/example-data/seattle-weather.csv
 4bb6c57009dc7cfc943317326fa1e3cc *inst/htmlwidgets/lib/vega-embed/LICENSE
 2ab85cf9f3d83d6155fddc5d96aaa265 *inst/htmlwidgets/lib/vega-embed/vega-embed.css

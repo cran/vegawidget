@@ -1,3 +1,11 @@
+# vegawidget 0.4.3
+
+* Update method signatures of internal function for autosizing (#225)
+
+* Update vega_version() internals to comport with R 4.4 (#220)
+
+* Update GitHub Actions, Roxygen (#221)
+
 # vegawidget 0.4.2
 
 * Use Vega-Lite 5.5.0. (#208)
