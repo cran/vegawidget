@@ -1,3 +1,19 @@
+# vegawidget 0.5.0
+
+## Features
+
+* Update Vega-Lite version to 5.16.3 (#29)
+
+## Fixes
+
+* Update `vw_handler_add_effect()` to be compliant with upcoming changes in 
+  {glue} (#227)
+  
+## Documentation
+
+* Clarify that promises (indeed anything without the class `vegaspec`) needs to
+  be converted into a `vegaspec` or `vegawidget` to be rendered (#216)
+
 # vegawidget 0.4.3
 
 * Update method signatures of internal function for autosizing (#225)
